@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-
+import blogService from './services/blogs'
 
 function App() {
   const [blogs, setBlogs] = useState([])
@@ -7,11 +7,8 @@ function App() {
   const [content, setContent] = useState("")
   const [title, setTitle] = useState("")
 
-  const url = "http://localhost:3000/blogs"
-  
   useEffect(() => {
-    fetch(url)
-      .then( response => response.json())
+      blogService.getAll()
       .then( data => setBlogs(data))
   })
 
@@ -36,9 +33,9 @@ function App() {
   const addBlog = e => {
     e.preventDefault()
     const newBlog = { 
-      author: author,
-      content: content,
-      title: title,
+      author,
+      content,
+      title,
       important: true
     }
     const options = {
@@ -46,20 +43,15 @@ function App() {
       headers: { "Content-Type": "application/json" }, 
       body: JSON.stringify(newBlog),
     }
-    fetch(url, options)
-    .then((res) => res.json())
-    .then(data =>console.log(data))
+    blogService.create(options)
     setAuthor("")
     setContent("")
     setTitle("")
   }
 
   const deleteBlog = (id) => {
-    fetch(url + "/" + id, {
-      method: 'DElETE'
-    })
-      .then( response => response.json())
-      .then( data => console.log(data))
+    const options = { method: 'DElETE' }
+    blogService.update(id, options)
     blogs.filter(blog => blog.id !== id)
     console.log(id)
   }
@@ -70,15 +62,12 @@ function App() {
       ...blogToUpdate,
       important: !blogToUpdate.important
     }
-    console.log("old blog", blogToUpdate)
-    console.log("new blog", updatedBlog)
-    fetch(url + "/" + id, {
+    const options = {
       method: 'PUT',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedBlog)
-    })
-      .then( response => response.json())
-      .then( data => console.log(data))
+    }
+    blogService.update(id,options)
     blogs.map(blog => blog.id === id ? updatedBlog : blog)
     console.log(id)
   }
