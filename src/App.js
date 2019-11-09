@@ -1,41 +1,24 @@
 import React, { useState, useEffect} from 'react';
+import { useField } from './hooks'
 import blogService from './services/blogs'
 
 function App() {
   const [blogs, setBlogs] = useState([])
-  const [author, setAuthor] = useState("")
-  const [content, setContent] = useState("")
-  const [title, setTitle] = useState("")
-
+  const author = useField("author")
+  const content = useField("content")
+  const title = useField("title")
+  
   useEffect(() => {
       blogService.getAll()
       .then( data => setBlogs(data))
   })
 
-  const updateAuthor = (e) => {
-    e.preventDefault()
-    console.log(e.target.value)
-    setAuthor(e.target.value)
-  }
-
-  const updateContent = (e) => {
-    e.preventDefault()
-    console.log(e.target.value)
-    setContent(e.target.value)
-  }
-
-  const updateTitle = (e) => {
-    e.preventDefault()
-    console.log(e.target.value)
-    setTitle(e.target.value)
-  }
-
   const addBlog = e => {
     e.preventDefault()
     const newBlog = { 
-      author,
-      content,
-      title,
+      author: author.value,
+      content: content.value,
+      title: title.value,
       important: true
     }
     const options = {
@@ -44,9 +27,9 @@ function App() {
       body: JSON.stringify(newBlog),
     }
     blogService.create(options)
-    setAuthor("")
-    setContent("")
-    setTitle("")
+    author.reset()
+    content.reset()
+    title.reset()
   }
 
   const deleteBlog = (id) => {
@@ -93,13 +76,13 @@ function App() {
       <h2>Add blogs</h2>
       <form onSubmit={addBlog}>
         <div>
-          <input type="text" placeholder="author's name" onChange={updateAuthor} value={author}/>
+          <input {...author} reset=""/>
         </div>
         <div>
-          <input type="text" placeholder="title" onChange={updateTitle} value={title}/>
+          <input {...title} reset=""/>
         </div>
         <div>
-          <textarea placeholder="content" onChange={updateContent} value={content}/>
+          <textarea {...content} reset=""/>
         </div>
         <div>
           <input type="submit"/>
