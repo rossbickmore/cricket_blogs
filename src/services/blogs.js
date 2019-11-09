@@ -17,8 +17,6 @@ const update = (id, options) => {
   .then( data => console.log(data))
 }
 
-
-
 export default { 
   getAll,
   create,

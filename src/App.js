@@ -1,6 +1,8 @@
 import React, { useState, useEffect} from 'react';
 import { useField } from './hooks'
 import blogService from './services/blogs'
+import BlogList from './components/blogList'
+import BlogForm from './components/blogForm'
 
 function App() {
   const [blogs, setBlogs] = useState([])
@@ -52,42 +54,25 @@ function App() {
     }
     blogService.update(id,options)
     blogs.map(blog => blog.id === id ? updatedBlog : blog)
-    console.log(id)
   }
   
-  
-
-
   return (
     <div className="App">
       <h1>
         Cricket Blogs
       </h1>
-      <ul>
-        {blogs.map((blog) => 
-        <li key={blog.id}>
-          {blog.title} - a blog created by {blog.author} {blog.importance}
-          <p>{blog.content}</p>
-          <button onClick={() => deleteBlog(blog.id)}>Delete blog</button>
-          <button onClick={() => toggleImportance(blog.id)}>Toggle importance</button>
-        </li>
-        )}
-      </ul>
+      <BlogList 
+        blogs={blogs} 
+        deleteBlog={deleteBlog}
+        toggleImportance={toggleImportance}
+      />
       <h2>Add blogs</h2>
-      <form onSubmit={addBlog}>
-        <div>
-          <input {...author} reset=""/>
-        </div>
-        <div>
-          <input {...title} reset=""/>
-        </div>
-        <div>
-          <textarea {...content} reset=""/>
-        </div>
-        <div>
-          <input type="submit"/>
-        </div>
-      </form>
+      <BlogForm 
+        author={author}
+        title={title}
+        content={content}
+        addBlog={addBlog}
+      />
     </div>
   );
 }
