@@ -1,52 +1,11 @@
 {
   "blogs": [
     {
-      "id": 1,
-      "title": "A crikcet blog",
-      "author": "Alan Davies",
-      "created_at": "-",
-      "content": "This is my blog about cricket..."
-    },
-    {
-      "id": 2,
-      "title": "A crikcet blog",
-      "author": "Alan Davies",
-      "created_at": "-",
-      "content": "This is my blog about cricket..."
-    },
-    {
-      "id": 3,
-      "title": "A crikcet blog",
-      "author": "Alan Davies",
-      "created_at": "-",
-      "content": "This is my blog about cricket..."
-    },
-    {
-      "author": "sdsad",
-      "content": "sdds",
-      "id": 4
-    },
-    {
-      "author": "ben",
-      "content": "a blog i wrote",
-      "id": 5
-    },
-    {
-      "author": "Johnty",
-      "content": "Content test",
-      "id": 6
-    },
-    {
-      "author": "Ross",
-      "content": "cricekt is good",
-      "title": "My cricket blog",
-      "id": 7
-    },
-    {
-      "author": "sddasd",
-      "content": "adsdsdsa",
-      "title": "asdsa",
-      "id": 8
+      "author": "asdsa",
+      "content": "dsads",
+      "title": "dsads",
+      "important": true,
+      "id": 1
     }
   ]
 }
