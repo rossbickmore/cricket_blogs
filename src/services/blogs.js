@@ -1,18 +1,18 @@
-const url = "http://localhost:3002/blogs"
+const baseUrl = "/api/blogs"
 
 const getAll = () => {
-  return fetch(url)
+  return fetch(baseUrl)
     .then( response => response.json())
 }
 
 const create = options => {
-  return fetch(url, options)
+  return fetch(baseUrl, options)
   .then((res) => res.json())
   .then(data =>console.log(data))
 }
 
 const update = (id, options) => {
-  return fetch(url + "/" + id, options)
+  return fetch(baseUrl + "/" + id, options)
   .then( response => response.json())
   .then( data => console.log(data))
 }
