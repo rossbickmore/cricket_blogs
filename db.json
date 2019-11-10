@@ -1,18 +1,11 @@
 {
   "blogs": [
     {
-      "author": "asdsa",
-      "content": "dsads",
-      "title": "dsads",
+      "author": "Ian",
+      "content": "This is my long bloggggg",
+      "title": "Book title",
       "important": true,
       "id": 1
-    },
-    {
-      "author": "he",
-      "content": "",
-      "title": "ehejba",
-      "important": true,
-      "id": 2
     }
   ]
 }

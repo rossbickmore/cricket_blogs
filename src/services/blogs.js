@@ -1,4 +1,4 @@
-const url = "http://localhost:3000/blogs"
+const url = "http://localhost:3002/blogs"
 
 const getAll = () => {
   return fetch(url)

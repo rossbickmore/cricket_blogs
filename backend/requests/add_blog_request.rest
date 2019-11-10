@@ -1,0 +1,8 @@
+POST http://localhost:3002/blogs
+Content-Type: application/json
+
+{
+  "author": "Ben",
+  "content": "Something interesting",
+  "title": "this is my blog"
+}
