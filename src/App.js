@@ -60,6 +60,7 @@ function App() {
     <div className="App">
       <h1>
         Cricket Blogs
+        by Ross Bickmore
       </h1>
       <BlogList 
         blogs={blogs} 
