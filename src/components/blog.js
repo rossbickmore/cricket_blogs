@@ -7,6 +7,6 @@ const Blog = ({id, title, content, author, importance, deleteBlog, toggleImporta
       <button onClick={() => deleteBlog(id)}>Delete blog</button>
       <button onClick={() => toggleImportance(id)}>Toggle importance</button>
   </li>
-);
+)
 
 export default Blog;
