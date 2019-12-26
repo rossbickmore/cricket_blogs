@@ -36,7 +36,6 @@ function App() {
       const user = await loginService.login({
         username, password,
       })
-
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )       
@@ -50,6 +49,15 @@ function App() {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const handleLogout = (event) => {
+    event.preventDefault()
+    setUser(null)
+    console.log(user)
+    window.localStorage.clear()
+    setUsername('')
+    setPassword('')
   }
 
   const addBlog = e => {
@@ -130,19 +138,20 @@ function App() {
         loginForm() :
         <div>
           <h2>Add blogs {user.name}</h2>
+          <button onClick={handleLogout}>LogOut</button>
           <BlogForm 
             author={author}
             title={title}
             content={content}
             addBlog={addBlog}
           />
+          <BlogList 
+            blogs={blogs} 
+            deleteBlog={deleteBlog}
+            toggleImportance={toggleImportance}
+          />
         </div>
       }
-      <BlogList 
-        blogs={blogs} 
-        deleteBlog={deleteBlog}
-        toggleImportance={toggleImportance}
-      />
     </div>
   );
 }
