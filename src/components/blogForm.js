@@ -1,18 +1,24 @@
 import React from 'react';
+import styled from 'styled-components'  
+
+const Input = styled.input`
+  margin: 0.25em;
+`
+
 
 const BlogForm = ({addBlog, author, title, content}) => (
   <form onSubmit={addBlog}>
         <div>
-          <input {...author} reset=""/>
+          <Input {...author} reset=""/>
         </div>
         <div>
-          <input {...title} reset=""/>
+          <Input {...title} reset=""/>
         </div>
         <div>
           <textarea {...content} reset=""/>
         </div>
         <div>
-          <input type="submit"/>
+          <Input type="submit"/>
         </div>
   </form>      
 );

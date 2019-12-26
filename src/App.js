@@ -1,12 +1,36 @@
 import React, { useState, useEffect} from 'react';
+import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
 import { useField } from './hooks'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Notification from './components/Notification.js'
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
-import Togglable from './components/Togglable'
+import Home from './components/Home'
+import styled from 'styled-components'
+
+const Page = styled.div`
+  padding: 1em;
+  background: papayawhip;
+  height: 100vmin;
+`
+
+const Navigation = styled.div`
+  background: BurlyWood;
+  padding: 1em;
+  a {
+    margin-left: 2%;
+  }
+`
+
+const Footer = styled.div`
+  position: absolute;
+  background: Chocolate;
+  padding: 1em;
+  margin-top: 1em;
+  bottom: 0px;
+  width: 100%;
+`
 
 function App() {
   const [blogs, setBlogs] = useState([])
@@ -126,60 +150,62 @@ function App() {
       })
   }
 
-  const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-    const showWhenVisible = { display: loginVisible ? '' : 'none' }
-
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>log in</button>
-        </div>
-        <div style={showWhenVisible}>
-          <LoginForm
-            username={username}
-            password={password}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-            handleSubmit={handleLogin}
-          />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
-        </div>
-      </div>
-    )
-  }
+  const loginForm = () => (
+    <LoginForm
+      username={username}
+      password={password}
+      handleUsernameChange={({ target }) => setUsername(target.value)}
+      handlePasswordChange={({ target }) => setPassword(target.value)}
+      handleSubmit={handleLogin}
+    />
+  )
 
 
   return (
-    <div className="App">
-      <h1>
-        Cricket Blogs
-        by Ross Bickmore
-      </h1>
-      <Notification message={errorMessage} />
-      {user === null ?
-        loginForm() :
+    <Page>
+      <Router>
         <div>
-          <h2>Add blogs {user.name}</h2>
-          <button onClick={handleLogout}>LogOut</button>
-          <Togglable buttonLabel="new note">
-            <BlogForm 
+          <Navigation>
+            <Link to="/blogs">Blogs</Link>
+            {!user && <Link to="/login">Login</Link>}
+            {user && 
+            <div>
+              <Link to="/">Home</Link>
+              <Link to="/users">Users</Link>
+              <Link to="/create">Write a blog</Link>
+              <Link onClick={handleLogout}>Logout</Link>
+            </div>
+            }
+          </Navigation>
+          <Route path="/" render={() =>
+           user ? <Home user={user}/> : <Redirect to="/login"/>
+          } />
+          <Route exact path="/blogs" render={() =>
+            <BlogList 
+              blogs={blogs} 
+              deleteBlog={deleteBlog}
+              toggleImportance={toggleImportance}
+              addLike={addLike}
+              currentUser={user}
+            />}
+          />
+          <Route path="/login" render={() =>
+            user ? <Redirect to="/"/> : loginForm()}
+          />
+          <Route path="/create" render={() =>
+            <BlogForm
+              addBlog={addBlog}
               author={author}
               title={title}
               content={content}
-              addBlog={addBlog}
-            />
-          </Togglable>
+            /> }
+          />
         </div>
-      }
-      <BlogList 
-        blogs={blogs} 
-        deleteBlog={deleteBlog}
-        toggleImportance={toggleImportance}
-        addLike={addLike}
-        currentUser={user}
-      />
-    </div>
+      </Router>
+      <Footer>
+        Bloging app made by Ross Bickmore
+      </Footer>
+    </Page>
   );
 }
 
