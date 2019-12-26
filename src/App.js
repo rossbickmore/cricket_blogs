@@ -83,11 +83,28 @@ function App() {
     console.log(id)
   }
 
+  const addLike = (id) => {
+    const blog = blogs.find(n => n.id === id)
+    const changedBlog = { ...blog, likes: blog.likes + 1 }
+    blogService
+      .update(id, changedBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+      })
+      .catch(error => {
+        setErrorMessage(
+          `Blog '${blog.content}' was already  from server`
+        )
+        console.log(error)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        setBlogs(blogs.filter(n => n.id !== id))
+      })
+  }
   const toggleImportance = id => {
     const blog = blogs.find(n => n.id === id)
-    console.log(blog)
     const changedBlog = { ...blog, important: !blog.important }
-    console.log(changedBlog)
     blogService
       .update(id, changedBlog)
       .then(returnedBlog => {
@@ -155,6 +172,7 @@ function App() {
         blogs={blogs} 
         deleteBlog={deleteBlog}
         toggleImportance={toggleImportance}
+        addLike={addLike}
       />
     </div>
   );
