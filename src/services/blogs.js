@@ -1,4 +1,3 @@
-import axios from 'axios'
 const baseUrl = '/api/blogs'
 
 let token = null 
@@ -7,30 +6,41 @@ const setToken = newToken => {
   token = `bearer ${newToken}`
 }
 
-const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+const getAll = async () => {
+  const response = await fetch(baseUrl)
+  const commits = await response.json()
+  return commits
 }
 
 const create = async newObject => {
   const config = {
-    headers: { Authorization: token },
+    method: 'POST',
+    headers: { Authorization: token, 'Content-Type': 'application/json;charset=utf-8'},
+    body: JSON.stringify(newObject)
   }
-  const response = await axios.post(baseUrl, newObject, config) 
-  return response.data
+  const response = await fetch(baseUrl, config)
+  const result = await response.json()
+  return result
 }
 
-const update = (id, newObject) => {
+const update = async (id, newObject) => {
   const config = {
-    headers: { Authorization: token },
+    method: 'PUT',
+    headers: { Authorization: token, 'Content-Type': 'application/json;charset=utf-8' },
+    body: JSON.stringify(newObject)
   }
-  const request = axios.put(`${ baseUrl }/${id}`, newObject, config)
-  return request.then(response => response.data)
+  const response = await fetch(`${ baseUrl }/${id}`,config)
+  console.log(response)
+  const result = await response.json()
+  return result
+  
 }
 
-const destroy = id => {
-  const request = axios.delete(`${ baseUrl }/${id}`)
-  return request.then(response => response.data)
+const destroy = async id => {
+  const config = {
+    method: 'DELETE',
+  }
+  await fetch(`${ baseUrl }/${id}`, config)
 }
 
-export default { getAll, create, update, destroy, setToken } 
+export default { getAll, create, destroy, update, setToken } 

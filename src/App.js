@@ -18,8 +18,7 @@ function App() {
   
   useEffect(() => {
       blogService.getAll()
-      .then( data => 
-        setBlogs(data))
+      .then( data => setBlogs(data))
   })
 
   useEffect(() => {
@@ -59,7 +58,6 @@ function App() {
       author: author.value,
       content: content.value,
       title: title.value,
-      important: true,
       id: blogs.length + 1,
     }
     blogService.create(newBlog).then( data => setBlogs(blogs.concat(data)))
@@ -76,8 +74,9 @@ function App() {
 
   const toggleImportance = id => {
     const blog = blogs.find(n => n.id === id)
+    console.log(blog)
     const changedBlog = { ...blog, important: !blog.important }
-
+    console.log(changedBlog)
     blogService
       .update(id, changedBlog)
       .then(returnedBlog => {
@@ -85,8 +84,9 @@ function App() {
       })
       .catch(error => {
         setErrorMessage(
-          `Blog '${blog.content}' was already removed from server`
+          `Blog '${blog.content}' was already  from server`
         )
+        console.log(error)
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
