@@ -69,25 +69,30 @@ function App() {
   }
 
   const deleteBlog = (id) => {
-    const options = { method: 'DElETE' }
-    blogService.update(id, options)
+    blogService.destroy(id)
     blogs.filter(blog => blog.id !== id)
     console.log(id)
   }
 
-  const toggleImportance = (id) => {
-    const blogToUpdate = blogs.find(blog => blog.id === id)
-    const updatedBlog = {
-      ...blogToUpdate,
-      important: !blogToUpdate.important
-    }
-    const options = {
-      method: 'PUT',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedBlog)
-    }
-    blogService.update(id,options)
-    blogs.map(blog => blog.id === id ? updatedBlog : blog)
+  const toggleImportance = id => {
+    const blog = blogs.find(n => n.id === id)
+    const changedBlog = { ...blog, important: !blog.important }
+
+    blogService
+      .update(id, changedBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+      })
+      .catch(error => {
+        setErrorMessage(
+          `Blog '${blog.content}' was already removed from server`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        setBlogs(blogs.filter(n => n.id !== id))
+      })
+      
   }
 
   const loginForm = () => (
