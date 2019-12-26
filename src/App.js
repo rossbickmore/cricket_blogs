@@ -18,7 +18,8 @@ function App() {
   
   useEffect(() => {
       blogService.getAll()
-      .then( data => setBlogs(data))
+      .then( data => 
+        setBlogs(data))
   })
 
   useEffect(() => {
@@ -58,15 +59,10 @@ function App() {
       author: author.value,
       content: content.value,
       title: title.value,
-      important: true
+      important: true,
+      id: blogs.length + 1,
     }
-    const options = {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" }, 
-      body: JSON.stringify(newBlog),
-    }
-    console.log(options)
-    blogService.create(options)
+    blogService.create(newBlog).then( data => setBlogs(blogs.concat(data)))
     author.reset()
     content.reset()
     title.reset()
