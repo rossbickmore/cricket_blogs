@@ -12,13 +12,14 @@ const StyledDiv = styled.div`
   }
 `
 
-const Blog = ({id, title, content, author, important, deleteBlog, toggleImportance, user, likes, addLike}) => {
+const Blog = ({id, title, content, author, important, deleteBlog, toggleImportance, user, likes, addLike, currentUser}) => {
   const [expand, setExpand] = useState(false)
 
   const toggleExpand = () => {
     setExpand(!expand)
     console.log(expand)
   }
+
   return (
     <StyledDiv>
       <h4 onClick={() => toggleExpand()}>
@@ -28,7 +29,7 @@ const Blog = ({id, title, content, author, important, deleteBlog, toggleImportan
         <div>
           <p>Importance: {important ? "true" : "false"}</p>
           <p>{content}</p>
-          <button onClick={() => deleteBlog(id)}>Delete blog</button>
+          {user.username === currentUser.username && <button onClick={() => deleteBlog(id)}>Delete</button> }
           <button onClick={() => toggleImportance(id)}>Toggle importance</button>
           <p>{likes || 0} likes</p> <button onClick={() => addLike(id)}>like</button>
           <p>Added by {user.name}</p>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Blog from './Blog'
 
-const BlogList = ({blogs, deleteBlog, toggleImportance, addLike}) => (
+const BlogList = ({blogs, deleteBlog, toggleImportance, addLike, currentUser}) => (
   <div>
     {blogs.map((blog) => 
       <Blog
@@ -10,6 +10,7 @@ const BlogList = ({blogs, deleteBlog, toggleImportance, addLike}) => (
         deleteBlog={deleteBlog}
         toggleImportance = {toggleImportance}
         addLike = {addLike}
+        currentUser = {currentUser}
       />
     )}
   </div>

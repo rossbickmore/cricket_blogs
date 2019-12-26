@@ -21,7 +21,7 @@ function App() {
   
   useEffect(() => {
       blogService.getAll()
-      .then( data => setBlogs(data))
+      .then( data => setBlogs(data.sort( (a,b) => b.likes - a.likes)))
   })
 
   useEffect(() => {
@@ -78,9 +78,13 @@ function App() {
   }
 
   const deleteBlog = (id) => {
-    blogService.destroy(id)
-    blogs.filter(blog => blog.id !== id)
+    const blog = blogs.filter( (blog) => blog.id === id)[0]
     console.log(id)
+    console.log(blog)
+    if (window.confirm(`are you sure you want to delete ${blog.title}?`)) {
+      blogService.destroy(id)
+      blogs.filter(blog => blog.id !== id)
+    }
   }
 
   const addLike = (id) => {
@@ -173,6 +177,7 @@ function App() {
         deleteBlog={deleteBlog}
         toggleImportance={toggleImportance}
         addLike={addLike}
+        currentUser={user}
       />
     </div>
   );
