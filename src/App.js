@@ -3,8 +3,10 @@ import { useField } from './hooks'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification.js'
-import BlogList from './components/blogList'
-import BlogForm from './components/blogForm'
+import BlogList from './components/BlogList'
+import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
+import Togglable from './components/Togglable'
 
 function App() {
   const [blogs, setBlogs] = useState([])
@@ -15,6 +17,7 @@ function App() {
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
+  const [loginVisible, setLoginVisible] = useState(false)
   
   useEffect(() => {
       blogService.getAll()
@@ -100,33 +103,32 @@ function App() {
         }, 5000)
         setBlogs(blogs.filter(n => n.id !== id))
       })
-      
   }
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
+  const loginForm = () => {
+    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
+    const showWhenVisible = { display: loginVisible ? '' : 'none' }
+
+    return (
       <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
+        <div style={hideWhenVisible}>
+          <button onClick={() => setLoginVisible(true)}>log in</button>
+        </div>
+        <div style={showWhenVisible}>
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}
+          />
+          <button onClick={() => setLoginVisible(false)}>cancel</button>
+        </div>
       </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-  )
-  
+    )
+  }
+
+
   return (
     <div className="App">
       <h1>
@@ -139,19 +141,21 @@ function App() {
         <div>
           <h2>Add blogs {user.name}</h2>
           <button onClick={handleLogout}>LogOut</button>
-          <BlogForm 
-            author={author}
-            title={title}
-            content={content}
-            addBlog={addBlog}
-          />
-          <BlogList 
-            blogs={blogs} 
-            deleteBlog={deleteBlog}
-            toggleImportance={toggleImportance}
-          />
+          <Togglable buttonLabel="new note">
+            <BlogForm 
+              author={author}
+              title={title}
+              content={content}
+              addBlog={addBlog}
+            />
+          </Togglable>
         </div>
       }
+      <BlogList 
+        blogs={blogs} 
+        deleteBlog={deleteBlog}
+        toggleImportance={toggleImportance}
+      />
     </div>
   );
 }
