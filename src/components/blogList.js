@@ -2,7 +2,7 @@ import React from 'react';
 import Blog from './Blog'
 
 const BlogList = ({blogs, deleteBlog, toggleImportance}) => (
-  <ul>
+  <div>
     {blogs.map((blog) => 
       <Blog
         {...blog}
@@ -11,7 +11,7 @@ const BlogList = ({blogs, deleteBlog, toggleImportance}) => (
         toggleImportance = {toggleImportance}
       />
     )}
-  </ul>
+  </div>
 );
 
 export default BlogList;
