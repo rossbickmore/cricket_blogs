@@ -37,6 +37,8 @@ const Footer = styled.div`
 
 function App() {
   const [blogs, setBlogs] = useState([])
+  const [comment, setComment] = useState("")
+  const [comments, setComments] = useState([])
   const author = useField("author")
   const content = useField("content")
   const title = useField("title")
@@ -103,10 +105,18 @@ function App() {
     title.reset()
   }
 
+  const addComment = (e, blogId)=> {
+    e.preventDefault()
+    const newComment = { 
+      comment: comment,
+    }
+    console.log(comment)
+    blogService.createComment(newComment, blogId).then( data => setComments(comments.concat(data)))
+    setComment('')
+  }
+
   const deleteBlog = (id) => {
     const blog = blogs.filter( (blog) => blog.id === id)[0]
-    console.log(id)
-    console.log(blog)
     if (window.confirm(`are you sure you want to delete ${blog.title}?`)) {
       blogService.destroy(id)
       blogs.filter(blog => blog.id !== id)
@@ -125,26 +135,6 @@ function App() {
         setErrorMessage(
           `Blog '${blog.content}' was already  from server`
         )
-        console.log(error)
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-        setBlogs(blogs.filter(n => n.id !== id))
-      })
-  }
-  const toggleImportance = id => {
-    const blog = blogs.find(n => n.id === id)
-    const changedBlog = { ...blog, important: !blog.important }
-    blogService
-      .update(id, changedBlog)
-      .then(returnedBlog => {
-        setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
-      })
-      .catch(error => {
-        setErrorMessage(
-          `Blog '${blog.content}' was already  from server`
-        )
-        console.log(error)
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
@@ -191,9 +181,11 @@ function App() {
             <BlogList 
               blogs={blogs} 
               deleteBlog={deleteBlog}
-              toggleImportance={toggleImportance}
               addLike={addLike}
               currentUser={user}
+              comment={comment}
+              handleCommentChange={({ target }) => setComment(target.value)}
+              handleSubmit={addComment}
             />}
           />
           <Route path="/login" render={() =>

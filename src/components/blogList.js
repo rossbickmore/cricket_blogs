@@ -1,16 +1,18 @@
 import React from 'react';
 import Blog from './Blog'
 
-const BlogList = ({blogs, deleteBlog, toggleImportance, addLike, currentUser}) => (
+const BlogList = ({blogs, deleteBlog, addLike, currentUser, comment, handleCommentChange, handleSubmit}) => (
   <div>
     {blogs.map((blog) => 
       <Blog
         {...blog}
         key={blog.id}
         deleteBlog={deleteBlog}
-        toggleImportance = {toggleImportance}
         addLike = {addLike}
         currentUser = {currentUser}
+        comment={comment}
+        handleCommentChange={handleCommentChange}
+        handleSubmit={handleSubmit}
       />
     )}
   </div>

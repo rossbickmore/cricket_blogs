@@ -18,6 +18,7 @@ const create = async newObject => {
     headers: { Authorization: token, 'Content-Type': 'application/json;charset=utf-8'},
     body: JSON.stringify(newObject)
   }
+  console.log(config)
   const response = await fetch(baseUrl, config)
   const result = await response.json()
   return result
@@ -43,4 +44,17 @@ const destroy = async id => {
   await fetch(`${ baseUrl }/${id}`, config)
 }
 
-export default { getAll, create, destroy, update, setToken } 
+const createComment = async (newObject, id) => {
+  const config = {
+    method: 'POST',
+    headers: { Authorization: token, 'Content-Type': 'application/json;charset=utf-8'},
+    body: JSON.stringify(newObject)
+  }
+  console.log(config)
+  const response = await fetch(`${baseUrl}/${id}/comments`, config)
+  const result = await response
+  console.log(result)
+  return result
+}
+
+export default { getAll, create, destroy, update, createComment, setToken } 

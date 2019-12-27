@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import Comment from '../components/Comment'
+import CommentForm from '../components/CommentForm'
 
 const StyledDiv = styled.div`
   margin: 20px;
@@ -22,14 +24,11 @@ const Button = styled.button`
 `
 
 
-const Blog = ({id, title, content, author, important, deleteBlog, toggleImportance, user, likes, addLike, currentUser, comments}) => {
+const Blog = ({id, title, content, author, important, deleteBlog, user, likes, addLike, currentUser, comments, comment, handleCommentChange, handleSubmit}) => {
   const [expand, setExpand] = useState(true)
-
   const toggleExpand = () => {
     setExpand(!expand)
-    console.log(expand)
   }
-
   return (
     <StyledDiv>
       <h4 onClick={() => toggleExpand()}>
@@ -40,11 +39,11 @@ const Blog = ({id, title, content, author, important, deleteBlog, toggleImportan
           <p>Importance: {important ? "true" : "false"}</p>
           <p>{content}</p>
           {currentUser && user.username === currentUser.username && <Button onClick={() => deleteBlog(id)}>Delete</Button> }
-          <Button onClick={() => toggleImportance(id)}>Toggle importance</Button>
           <p>{likes || 0} likes</p> <Button onClick={() => addLike(id)}>like</Button>
           <p>Added by {user.username}</p>
           <h5>Comments</h5>
-          {comments.map( item => <p>{item.comment}</p>)}
+          <CommentForm blogId={id} handleSubmit={handleSubmit} handleCommentChange={handleCommentChange} comment={comment}/>
+          {comments.map( item => <Comment comment={item.comment}/>)}
         </div>
       }
     </StyledDiv>
