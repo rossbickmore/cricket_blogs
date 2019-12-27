@@ -5,7 +5,6 @@ const Input = styled.input`
   margin: 0.25em;
 `
 
-
 const BlogForm = ({addBlog, author, title, content}) => (
   <form onSubmit={addBlog}>
         <div>

@@ -6,13 +6,16 @@ import loginService from './services/login'
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
+import SignUpForm from './components/SignUpForm'
 import Home from './components/Home'
 import styled from 'styled-components'
 
 const Page = styled.div`
-  padding: 1em;
   background: papayawhip;
-  height: 100vmin;
+  min-height: 100vmin;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 `
 
 const Navigation = styled.div`
@@ -41,7 +44,6 @@ function App() {
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
-  const [loginVisible, setLoginVisible] = useState(false)
   
   useEffect(() => {
       blogService.getAll()
@@ -160,21 +162,26 @@ function App() {
     />
   )
 
-
   return (
     <Page>
       <Router>
         <div>
           <Navigation>
-            <Link to="/blogs">Blogs</Link>
-            {!user && <Link to="/login">Login</Link>}
-            {user && 
+            {!user && 
             <div>
-              <Link to="/">Home</Link>
-              <Link to="/users">Users</Link>
-              <Link to="/create">Write a blog</Link>
-              <Link onClick={handleLogout}>Logout</Link>
+              <Link to="/blogs">Blogs</Link>
+              <Link to="/login">Login</Link>
+              <Link to="/signup">SignUp</Link>
             </div>
+            }
+            {user && 
+              <div>
+                <Link to="/">Home</Link>
+                <Link to="/blogs">Blogs</Link>
+                <Link to="/users">Users</Link>
+                <Link to="/create">Write a blog</Link>
+                <Link onClick={handleLogout}>Logout</Link>
+              </div>
             }
           </Navigation>
           <Route path="/" render={() =>
@@ -200,6 +207,7 @@ function App() {
               content={content}
             /> }
           />
+          <Route path="/signup" render={() => <SignUpForm handleLogin={handleLogin}/>}/>
         </div>
       </Router>
       <Footer>
