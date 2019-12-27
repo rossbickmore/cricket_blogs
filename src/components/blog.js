@@ -22,7 +22,7 @@ const Button = styled.button`
 `
 
 
-const Blog = ({id, title, content, author, important, deleteBlog, toggleImportance, user, likes, addLike, currentUser}) => {
+const Blog = ({id, title, content, author, important, deleteBlog, toggleImportance, user, likes, addLike, currentUser, comments}) => {
   const [expand, setExpand] = useState(true)
 
   const toggleExpand = () => {
@@ -43,6 +43,8 @@ const Blog = ({id, title, content, author, important, deleteBlog, toggleImportan
           <Button onClick={() => toggleImportance(id)}>Toggle importance</Button>
           <p>{likes || 0} likes</p> <Button onClick={() => addLike(id)}>like</Button>
           <p>Added by {user.username}</p>
+          <h5>Comments</h5>
+          {comments.map( item => <p>{item.comment}</p>)}
         </div>
       }
     </StyledDiv>
