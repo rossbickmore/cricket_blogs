@@ -24,17 +24,23 @@ const Button = styled.button`
 `
 
 
-const Blog = ({id, title, content, author, important, deleteBlog, user, likes, addLike, currentUser, comments, comment, handleCommentChange, handleSubmit}) => {
-  const [expand, setExpand] = useState(true)
-  const toggleExpand = () => {
-    setExpand(!expand)
+const Blog = ({id, title, content, author, important, deleteBlog, user, likes, addLike, currentUser, comments, comment, handleCommentChange, handleSubmit, users}) => {
+  const [expandBlog, setExpandBlog] = useState(true)
+  const [expandComments, setExpandComments] = useState(true)
+
+  const toggleExpandBlog = () => {
+    setExpandBlog(!expandBlog)
+  }
+
+  const toggleExpandComments = () => {
+    setExpandComments(!expandComments)
   }
   return (
     <StyledDiv>
-      <h4 onClick={() => toggleExpand()}>
+      <h4 onClick={() => toggleExpandBlog()}>
         {title} - a blog created by {author}
       </h4>
-      { !expand && 
+      { !expandBlog && 
         <div>
           <p>Importance: {important ? "true" : "false"}</p>
           <p>{content}</p>
@@ -43,7 +49,9 @@ const Blog = ({id, title, content, author, important, deleteBlog, user, likes, a
           <p>Added by {user.username}</p>
           <h5>Comments</h5>
           <CommentForm blogId={id} handleSubmit={handleSubmit} handleCommentChange={handleCommentChange} comment={comment}/>
-          {comments.map( item => <Comment comment={item.comment}/>)}
+          <button onClick={() => toggleExpandComments()}>See comments</button>
+          {!expandComments &&
+            comments.map( item => <Comment comment={item.comment} user={users.find( user => user.id === item.user )}/>).reverse()}
         </div>
       }
     </StyledDiv>

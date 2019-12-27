@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'reac
 import { useField } from './hooks'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import userService from './services/users'
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
@@ -37,6 +38,7 @@ const Footer = styled.div`
 
 function App() {
   const [blogs, setBlogs] = useState([])
+  const [users, setUsers] = useState([])
   const [comment, setComment] = useState("")
   const [comments, setComments] = useState([])
   const author = useField("author")
@@ -50,6 +52,8 @@ function App() {
   useEffect(() => {
       blogService.getAll()
       .then( data => setBlogs(data.sort( (a,b) => b.likes - a.likes)))
+      userService.getAll()
+      .then( data => setUsers(data))
   })
 
   useEffect(() => {
@@ -186,6 +190,7 @@ function App() {
               comment={comment}
               handleCommentChange={({ target }) => setComment(target.value)}
               handleSubmit={addComment}
+              users={users}
             />}
           />
           <Route path="/login" render={() =>
